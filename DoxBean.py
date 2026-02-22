@@ -99,8 +99,9 @@ def main():
         elif choice == '3': social_hunter()
         elif choice == '4': port_scanner()
         elif choice == '0': sys.exit()
-        else: print(f"{R}Exiting... you for using DoxBean GOODBYE!{W}"); time.sleep(1)
-                          tyme.sleep(1)
+        else: print(f"{R}Exiting... you for using DoxBean GOODBYE!{W}"); 
+            .            time.sleep(1)
+                          
 if __name__ == "__main__":
     main()
 
