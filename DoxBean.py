@@ -20,9 +20,9 @@ def banner():
  |____/ \___/_/\_\   |____/ \___|\__,_|_| |_| v0.1{W}
 
  {G}Created by: Giorgi Tskrialashvili{W}
- {G}GitHub: @onlygiorgi-20  {+} {W}
- Discord: @only.giorgi      {+} {W} 
- instagram: @only.giorgi404 {+} {W}
+ {G}GitHub: @onlygiorgi-20  [+] {W}
+ Discord: @only.giorgi      [+] {W} 
+ instagram: @only.giorgi404 [+] {W}
  --------------------------------------------------
  {R}[1]{W} Information Gathering   {R}[2]{W} Password Attacks
  {R}[3]{W} Wireless Testing        {R}[4]{W} Exploitation Tools
