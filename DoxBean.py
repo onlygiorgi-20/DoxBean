@@ -13,14 +13,14 @@ def banner():
     os.system('clear')
     print(f"""
   {C}
- ____                ____                      
+  ____                ____                      
  |  _ \  _____  __   | __ )  ___  __ _ _ __  
  | | | |/ _ \ \/ /   |  _ \ / _ \/ _` | '_ \ 
  | |_| | (_) >  <    | |_) |  __/ (_| | | | |
- |____/ \___/_/\_\   |____/ \___|\__,_|_| |_|{W}
+ |____/ \___/_/\_\   |____/ \___|\__,_|_| |_| v0.1{W}
 
- {G}Created by: only.giorgi404{W}
- {G}GitHub: onlygiorgi-20 | Discord: only.giorgi{W}
+ {G}Created by: Giorgi Tskrialashvili{W}
+ {G}GitHub: @onlygiorgi-20 | Discord: @only.giorgi{W} | instagram: @only.giorgi404
  --------------------------------------------------
  {R}[1]{W} Information Gathering   {R}[2]{W} Password Attacks
  {R}[3]{W} Wireless Testing        {R}[4]{W} Exploitation Tools
@@ -69,7 +69,7 @@ def main():
             print(f"\n{G}[*]{W} Updating DoxBean...")
             os.system('git pull')
         elif choice == '99':
-            print(f"\n{R}Exiting DoxBean... Goodbye!{W}")
+            print(f"\n{R}Exiting DoxBean... thank you for using DoxBean Goodbye!{W}")
             sys.exit()
         else:
             print(f"\n{R}[!] Invalid Option!{W}")
