@@ -3,8 +3,9 @@ import sys
 import socket
 import requests
 import time
+import hashlib
 
-# Colors
+# Standard Colors
 R = '\033[31m' # Red
 G = '\033[32m' # Green
 C = '\033[36m' # Cyan
@@ -14,74 +15,97 @@ Y = '\033[33m' # Yellow
 def banner():
     os.system('clear')
     print(r"""{0}
-  _____                  ____                      
- |  __ \                |  _ \                     
- | |  | | ___  __  __   | |_) | ___  __ _ _ __  
- | |  | |/ _ \ \ \/ /   |  _ < / _ \/ _` | '_ \ 
- | |__| | (_) | >  <    | |_) |  __/ (_| | | | |
- |_____/ \___/ /_/\_\   |____/ \___|\__,_/_| |_|
-    {1}Terminal OSINT Tool - {2}Created by: Giorgi Tskrialashvili{1}
-     instagram:only.giorgi404
-     github: onlygiorgi-20
-     """.format(R, W, G))
-    print(f"{C}[1]{W} IP location")
-    print(f"{C}[2]{W} Domain Resolver")
-    print(f"{C}[3]{W} Social Media Hunter")
-    print(f"{C}[4]{W} Port Scanner")
-    print(f"{R}[0]{W} Exit Program\n")
+  _____                ____                      
+ |  __ \              |  _ \                     
+ | |  | | ___ __  __  | |_) | ___  __ _ _ __  
+ | |  | |/ _ \\ \/ /  |  _ < / _ \/ _` | '_ \ 
+ | |__| | (_) >  <    | |_) |  __/ (_| | | | |
+ |_____/ \___/_/\_\   |____/ \___|\__,_/_| |_|
+ {1}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ {2}  Author:    Giorgi Tskrialashvili
+ {2}  Instagram: only.giorgi404
+ {2}  GitHub:    onlygiorgi-20
+ {1}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    """.format(R, W, G))
+    print(f"{C}[1]{W} IP Lookup         {C}[5]{W} HTTP Headers")
+    print(f"{C}[2]{W} DNS Resolver      {C}[6]{W} MD5 Generator")
+    print(f"{C}[3]{W} Social Finder     {C}[7]{W} User-Agent Info")
+    print(f"{C}[4]{W} Port Scanner      {C}[8]{W} Network Info")
+    print(f"{R}[0]{W} Exit\n")
 
-def ip_geolocate():
-    target = input(f"\n{Y}Enter IP Address: {W}")
+def ip_lookup():
+    ip = input(f"\n{Y}Enter IP: {W}")
     try:
-        data = requests.get(f"http://ip-api.com/json/{target}").json()
-        if data['status'] == 'success':
-            print(f"\n{G}[+] IP: {W}{data['query']}\n{G}[+] Country: {W}{data['country']}\n{G}[+] ISP: {W}{data['isp']}")
-        else: print(f"{R}[!] Invalid IP.{W}")
-    except: print(f"{R}[!] Connection Error.{W}")
+        r = requests.get(f"http://ip-api.com/json/{ip}").json()
+        print(f"\n{G}[+] Country: {W}{r.get('country')}\n{G}[+] ISP: {W}{r.get('isp')}")
+    except: print(f"{R}[!] Error{W}")
     input(f"\n{C}Press Enter...{W}")
 
-def domain_resolve():
-    host = input(f"\n{Y}Enter Domain: {W}")
+def dns_resolve():
+    domain = input(f"\n{Y}Enter Domain: {W}")
     try:
-        print(f"\n{G}[+] IP: {W}{socket.gethostbyname(host)}")
-    except: print(f"{R}[!] Error.{W}")
+        print(f"{G}[+] IP: {W}{socket.gethostbyname(domain)}")
+    except: print(f"{R}[!] Failed{W}")
     input(f"\n{C}Press Enter...{W}")
 
-def social_hunter():
-    user = input(f"\n{Y}Enter Username: {W}")
-    links = [f"https://www.instagram.com/{user}", f"https://github.com/{user}"]
-    for url in links:
+def social_find():
+    u = input(f"\n{Y}Enter Username: {W}")
+    sites = ["instagram.com", "github.com", "twitter.com"]
+    for s in sites:
         try:
-            if requests.get(url, timeout=5).status_code == 200: print(f"{G}[FOUND] {W}{url}")
-            else: print(f"{R}[NOT] {W}{url.split('/')[2]}")
+            if requests.get(f"https://{s}/{u}", timeout=3).status_code == 200:
+                print(f"{G}[FOUND] {W}{s}")
+            else: print(f"{R}[NOT FOUND] {W}{s}")
         except: pass
     input(f"\n{C}Press Enter...{W}")
 
-def port_scanner():
-    target = input(f"\n{Y}Enter IP: {W}")
-    for port in [21, 22, 80, 443]:
+def port_scan():
+    host = input(f"\n{Y}Enter Host: {W}")
+    for p in [80, 443, 22]:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.settimeout(1)
-        if s.connect_ex((target, port)) == 0: print(f"{G}[+] Port {port}: OPEN{W}")
+        s.settimeout(0.5)
+        if s.connect_ex((host, p)) == 0: print(f"{G}[+] Port {p}: OPEN{W}")
         s.close()
+    input(f"\n{C}Press Enter...{W}")
+
+def http_headers():
+    url = input(f"\n{Y}Enter URL: {W}")
+    try:
+        h = requests.get(url).headers
+        for k, v in h.items(): print(f"{G}{k}: {W}{v}")
+    except: print(f"{R}[!] Error{W}")
+    input(f"\n{C}Press Enter...{W}")
+
+def hash_gen():
+    txt = input(f"\n{Y}Text: {W}")
+    print(f"{G}MD5: {W}{hashlib.md5(txt.encode()).hexdigest()}")
+    input(f"\n{C}Press Enter...{W}")
+
+def user_agent():
+    ua = requests.get("https://httpbin.org/user-agent").json()
+    print(f"\n{G}Your Agent: {W}{ua['user-agent']}")
+    input(f"\n{C}Press Enter...{W}")
+
+def network_info():
+    name = socket.gethostname()
+    print(f"\n{G}[+] Host: {W}{name}\n{G}[+] Local: {W}{socket.gethostbyname(name)}")
     input(f"\n{C}Press Enter...{W}")
 
 def main():
     while True:
         banner()
         choice = input(f"{R}DoxBean {C}> {W}")
-        if choice == '1': ip_geolocate()
-        elif choice == '2': domain_resolve()
-        elif choice == '3': social_hunter()
-        elif choice == '4': port_scanner()
-        elif choice == '0':
-            print(f"\n{G}Good Luck!{W}")
-            break
-        else:
-            print(f"{R}EXITING... Thank you for using DoxBean GOODBYE!{W}")
-            time.sleep(1)
+        if choice == '1': ip_lookup()
+        elif choice == '2': dns_resolve()
+        elif choice == '3': social_find()
+        elif choice == '4': port_scan()
+        elif choice == '5': http_headers()
+        elif choice == '6': hash_gen()
+        elif choice == '7': user_agent()
+        elif choice == '8': network_info()
+        elif choice == '0': break
+        else: time.sleep(1)
 
 if __name__ == "__main__":
     main()
-
 
